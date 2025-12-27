@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Architect Vol. 2: Physique</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #334155;
+            font-family: 'Inter', sans-serif;
+            padding: 20px 0;
+            color: #1e293b;
+            margin: 0;
+        }
+        
+        .page-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            width: 100%;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+
+        .page {
+            /* Mobile Default: Full width, auto height */
+            width: 100%;
+            max-width: 100%;
+            min-height: auto; 
+            padding-bottom: 60px; /* Space for footer/page number */
+            
+            background-color: white;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Desktop/Tablet Override: A4 Size fixed */
+        @media (min-width: 768px) {
+            body { padding: 40px 0; }
+            .page-container { gap: 40px; padding: 0; }
+            .page {
+                width: 210mm;
+                min-height: 297mm;
+                max-width: none;
+                padding-bottom: 0; /* Reset */
+            }
+        }
+
+        .bg-grid {
+            background-image: linear-gradient(#f1f5f9 1px, transparent 1px),
+            linear-gradient(90deg, #f1f5f9 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .bg-grid-dark {
+            background-image: linear-gradient(#1e293b 1px, transparent 1px),
+            linear-gradient(90deg, #1e293b 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-color: #0f172a;
+        }
+
+        h1, h2, h3, h4, .font-oswald { font-family: 'Oswald', sans-serif; text-transform: uppercase; }
+
+        .content-padding { padding: 1.5rem; }
+        @media (min-width: 768px) {
+            .content-padding { padding: 3rem; }
+        }
+
+        .section-break {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .cyan-box {
+            background-color: #ecfeff;
+            border-left: 4px solid #06b6d4;
+            padding: 1rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .slate-box {
+            background-color: #f1f5f9;
+            border-left: 4px solid #334155;
+            padding: 1rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .page-number {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .footer-logo {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 10px;
+            color: #cbd5e1;
+            letter-spacing: 2px;
+        }
+
+        p { margin-bottom: 1rem; line-height: 1.6; font-size: 0.95rem; text-align: justify; }
+        ul, ol { margin-bottom: 1rem; padding-left: 1.25rem; }
+        li { margin-bottom: 0.5rem; font-size: 0.95rem; line-height: 1.6; }
+        strong { color: #0f172a; font-weight: 700; }
+        .chapter-title { font-size: 2rem; font-weight: 700; line-height: 1.1; margin-bottom: 1.5rem; color: #0f172a; }
+        @media (min-width: 768px) { .chapter-title { font-size: 2.5rem; } }
+        
+        .sub-title { font-size: 1.25rem; font-weight: 600; color: #06b6d4; margin-bottom: 1rem; font-family: 'Oswald', sans-serif; }
+        
+        /* Visual Styles */
+        .technical-img {
+            width: 100%;
+            height: auto;
+            border: 1px solid #cbd5e1;
+            display: block;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .img-caption {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-align: center;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+
+        table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; font-size: 0.85rem; }
+        th { background-color: #0f172a; color: white; padding: 0.75rem; text-align: left; }
+        td { border-bottom: 1px solid #e2e8f0; padding: 0.75rem; vertical-align: top; }
+        tr:last-child td { border-bottom: none; }
+
+    </style>
+</head>
+<body>
+
+    <div class="page-container">
+
+        <!-- ================= PAGE 1: COVER ================= -->
+        <div class="page bg-slate-900 text-white relative flex flex-col justify-between p-6 md:p-10 min-h-[500px] md:min-h-[297mm]">
+            <div class="absolute inset-0 bg-grid-dark opacity-20"></div>
+            
+            <div class="z-10 flex justify-between items-start border-b border-slate-700 pb-4">
+                <div class="text-cyan-400 text-xs tracking-[0.2em] md:tracking-[0.4em] font-bold">PRIMETHEORY.LAB</div>
+                <div class="text-slate-500 text-[10px] text-right">PREMIUM EDITION<br>VOL. 02 - 2025</div>
+            </div>
+
+            <!-- VISUAL: COVER ART -->
+            <div class="z-10 flex-grow flex items-center justify-center my-8 md:my-0">
+                <img 
+                    src="assets/cover.jpg" 
+                    onerror="this.onerror=null; this.src='https://placehold.co/600x600/ef4444/ffffff?text=MISSING:+assets/cover.jpg';"
+                    alt="Cover Art" 
+                    class="rounded-full border-4 border-cyan-500/30 shadow-[0_0_50px_rgba(6,182,212,0.3)] max-w-[80%] md:max-w-[80%] object-cover aspect-square"
+                >
+            </div>
+
+            <div class="z-10 mb-10">
+                <h1 class="text-5xl md:text-[7rem] font-bold leading-none text-white tracking-tighter">THE<br><span class="text-cyan-500">ARCHITECT</span></h1>
+                <div class="flex items-center gap-4 mt-6">
+                    <div class="h-1 w-10 md:w-20 bg-white"></div>
+                    <h2 class="text-lg md:text-2xl text-slate-300 font-light tracking-widest">VOLUME 2: PHYSIQUE</h2>
+                </div>
+                <p class="text-slate-400 mt-4 text-sm max-w-sm">The Body Architecture: Science-Based Hypertrophy.</p>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 2: TOC & LEGAL ================= -->
+        <div class="page bg-white content-padding">
+            <div class="mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-8 font-oswald">DAFTAR ISI</h2>
+                <ul class="space-y-4 font-oswald text-slate-700">
+                    <li class="flex justify-between border-b border-slate-200 pb-2 text-sm md:text-base"><span>1. PENDAHULUAN: The Evolutionary Signal</span> <span>03</span></li>
+                    <li class="flex justify-between border-b border-slate-200 pb-2 text-sm md:text-base"><span>2. CHAPTER 1: THE AESTHETIC BLUEPRINT</span> <span>04</span></li>
+                    <li class="flex justify-between border-b border-slate-200 pb-2 text-sm md:text-base"><span>3. CHAPTER 2: THE PHYSICS OF MUSCLE GROWTH</span> <span>06</span></li>
+                    <li class="flex justify-between border-b border-slate-200 pb-2 text-sm md:text-base"><span>4. CHAPTER 3: THE WORKOUT PROTOCOL</span> <span>08</span></li>
+                    <li class="flex justify-between border-b border-slate-200 pb-2 text-sm md:text-base"><span>5. CHAPTER 4: NUTRITIONAL BIOCHEMISTRY</span> <span>12</span></li>
+                    <li class="flex justify-between border-b border-slate-200 pb-2 text-sm md:text-base"><span>6. CHAPTER 5: SUPPLEMENTATION & RECOVERY</span> <span>15</span></li>
+                    <li class="flex justify-between border-b border-slate-200 pb-2 text-sm md:text-base"><span>7. ACTION PLAN</span> <span>17</span></li>
+                </ul>
+            </div>
+            <div class="mt-auto text-xs text-slate-500">
+                <p class="font-bold mb-2">DISCLAIMER</p>
+                <p>Buku ini disusun berdasarkan riset kinesiologi dan teori estetika. Namun, penulis bukan dokter medis atau pelatih fisik bersertifikat. Semua protokol kesehatan (terutama yang melibatkan perubahan diet dan latihan beban intensitas tinggi) harus dilakukan dengan bijak dan menyesuaikan kondisi tubuh masing-masing. Penulis tidak bertanggung jawab atas cedera. Konsultasikan dengan profesional jika diperlukan.</p>
+                <p class="mt-4">&copy; 2025 PrimeTheory.Lab. All rights reserved.</p>
+            </div>
+            <div class="page-number">02</div>
+        </div>
+
+        <!-- ================= PAGE 3: PENDAHULUAN ================= -->
+        <div class="page bg-white content-padding bg-grid">
+            <h1 class="chapter-title">PENDAHULUAN:<br>THE EVOLUTIONARY SIGNAL</h1>
+            
+            <p>Pernah mikir gak, kenapa cowok yang badannya "V-Shape" (Bahu lebar, pinggang kecil) itu otomatis kelihatan keren?</p>
+            
+            <!-- VISUAL: EVOLUTIONARY SILHOUETTE -->
+            <img 
+                src="assets/evolution.jpg" 
+                onerror="this.onerror=null; this.src='https://placehold.co/800x300/f8fafc/334155?text=MISSING:+assets/evolution.jpg';"
+                alt="Evolutionary V-Taper Silhouette" 
+                class="technical-img"
+            >
+            <p class="img-caption">Fig 0.1: Rasio Bahu-Pinggang sebagai Sinyal Dominasi Biologis.</p>
+
+            <p>Bukan karena majalah <em>fitness</em>. Ini soal <strong>Evolusi</strong>, Bro. Jaman purba dulu, rasio bahu lebar itu tandanya lo jago berantem dan jago berburu. Cewek secara biologis "diprogram" buat nyari pasangan yang fisiknya kelihatan mampu ngelindungin dia dan anak-anaknya.</p>
+            
+            <p>Di jaman sekarang, kita emang gak berburu Mamut. Tapi sinyal bawah sadar itu tetep nyala. Badan atletis nunjukin kalau lo punya disiplin tinggi, sehat, dan dominan.</p>
+            
+            <div class="slate-box">
+                <p class="mb-0 text-sm">Volume 2 ini bukan buat jadi binaraga yang badannya kegedean sampe susah garuk punggung. Kita bakal bangun fisik <strong>"Greek God"</strong>: Ramping, Berotot, Simetris, dan Siap Tempur.</p>
+            </div>
+            
+            <div class="page-number">03</div>
+            <div class="footer-logo">THE ARCHITECT</div>
+        </div>
+
+        <!-- ================= PAGE 4: CHAPTER 1 (BLUEPRINT) ================= -->
+        <div class="page bg-white content-padding">
+            <h1 class="chapter-title">CHAPTER 1:<br>THE AESTHETIC BLUEPRINT</h1>
+            <p class="mb-6">Kita main angka ya, biar jelas targetnya. Jangan cuma "pengen sehat".</p>
+            
+            <h3 class="sub-title">1. The Adonis Index (Golden Ratio)</h3>
+            
+            <!-- VISUAL: MEASUREMENT GUIDE -->
+            <img 
+                src="assets/adonis-index.jpg" 
+                onerror="this.onerror=null; this.src='https://placehold.co/800x400/f1f5f9/334155?text=MISSING:+assets/adonis-index.jpg';"
+                alt="Shoulder vs Waist Measurement Lines" 
+                class="technical-img"
+            >
+            <p class="img-caption">Fig 1.1: Titik Ukur Lingkar Bahu & Pinggang.</p>
+
+            <p>Target visual cowok ganteng itu ada rumusnya: <strong>1.618</strong>.</p>
+            <ul class="list-disc space-y-2 mb-8">
+                <li><strong>Ukur Bahu Lo:</strong> Ukur keliling bahu di bagian paling lebar (tangan rileks di samping).</li>
+                <li><strong>Ukur Pinggang Lo:</strong> Ukur pas di puser.</li>
+                <li><strong>TARGET:</strong> Lingkar Bahu lo harus <strong>1.618 kali lipat</strong> dari Lingkar Pinggang.</li>
+            </ul>
+
+            <div class="cyan-box">
+                <p class="mb-0 text-sm"><em>Contoh:</em> Kalau pinggang lo 80 cm, target bahu lo minimal <strong>129 cm</strong>. Kejar angka itu.</p>
+            </div>
+
+            <h3 class="sub-title mt-8">2. Body Fat Percentage (Kadar Lemak)</h3>
+            <p>Asal lo tau, semua orang itu punya <em>Sixpack</em>. Cuma ketutup lemak doang.</p>
+            
+            <!-- VISUAL: BODY FAT COMPARISON -->
+            <img 
+                src="assets/bodyfat.jpg" 
+                onerror="this.onerror=null; this.src='https://placehold.co/800x200/f8fafc/334155?text=MISSING:+assets/bodyfat.jpg';"
+                alt="10% vs 15% vs 20% Body Fat Comparison" 
+                class="technical-img"
+            >
+
+            <ul class="list-disc space-y-2">
+                <li><strong>15-20% (Biasa Aja):</strong> Sehat sih, tapi otot lo gak tajem. Muka lo mungkin masih agak <em>chubby</em> atau <em>puffy</em>.</li>
+                <li><strong>10-12% (THE SWEET SPOT):</strong> Ini target kita. Di level ini, <em>Sixpack</em> lo nongol, rahang lo tajem, urat tangan keluar, tapi hormon lo tetep sehat dan "adik" lo tetep bangun pagi.</li>
+                <li><strong>&lt; 8% (Kering Kerontang):</strong> Jangan deh. Ini buat kompetisi doang. Lo bakal gampang sakit, lemes, dan libido lo mati. Gak <em>High Value</em>.</li>
+            </ul>
+            <div class="page-number">04</div>
+            <div class="footer-logo">THE ARCHITECT</div>
+        </div>
+
+        <!-- ================= PAGE 5: CHAPTER 2 COVER ================= -->
+        <div class="page bg-slate-900 text-white flex flex-col justify-center items-center relative overflow-hidden min-h-[400px] md:min-h-[297mm]">
+            <div class="absolute inset-0 bg-grid-dark opacity-30"></div>
+            <!-- VISUAL: MUSCLE FIBER MICRO -->
+            <img 
+                src="assets/muscle-fiber.jpg" 
+                onerror="this.onerror=null; this.src='https://placehold.co/800x400/1e293b/06b6d4?text=MISSING:+assets/muscle-fiber.jpg';"
+                alt="Chapter Visual" 
+                class="opacity-80 mb-8 max-w-[80%] border border-cyan-800"
+            >
+            
+            <div class="border-2 border-cyan-500 p-8 md:p-12 text-center z-10 bg-slate-900/90 backdrop-blur w-[90%] md:w-[80%]">
+                <h3 class="text-cyan-400 tracking-[0.3em] md:tracking-[0.5em] mb-4 font-oswald text-sm md:text-base">MODULE TWO</h3>
+                <h1 class="text-4xl md:text-6xl font-bold font-oswald mb-4">PHYSICS OF<br>GROWTH</h1>
+                <p class="text-slate-300 italic text-sm md:text-base">(Mekanisme Hipertrofi & Beban)</p>
+            </div>
+            <div class="page-number">05</div>
+        </div>
+
+        <!-- ================= PAGE 6: CHAPTER 2 CONTENT ================= -->
+        <div class="page bg-white content-padding">
+            <p>Dengerin baik-baik: <strong>Otot lo GAK TUMBUH pas lo lagi ngangkat beban.</strong> Otot lo tumbuh pas lo lagi <strong>TIDUR</strong>, buat nambal kerusakan yang lo bikin pas latihan.</p>
+
+            <h3 class="sub-title mt-6">3 Cara Bikin Otot Gede</h3>
+            
+            <!-- VISUAL: HYPERTROPHY MECHANISMS -->
+            <div class="flex gap-4 mb-4">
+                <div class="w-1/3 text-center border p-2">
+                    <span class="text-xs font-bold block mb-2">TENSION</span>
+                    <img 
+                        src="assets/icon-tension.jpg" 
+                        onerror="this.onerror=null; this.src='https://placehold.co/100x100/e2e8f0/64748b?text=MISSING';" 
+                        class="mx-auto rounded-full w-16 h-16 md:w-20 md:h-20 object-cover"
+                    >
+                </div>
+                <div class="w-1/3 text-center border p-2">
+                    <span class="text-xs font-bold block mb-2">DAMAGE</span>
+                    <img 
+                        src="assets/icon-damage.jpg" 
+                        onerror="this.onerror=null; this.src='https://placehold.co/100x100/e2e8f0/64748b?text=MISSING';" 
+                        class="mx-auto rounded-full w-16 h-16 md:w-20 md:h-20 object-cover"
+                    >
+                </div>
+                <div class="w-1/3 text-center border p-2">
+                    <span class="text-xs font-bold block mb-2">STRESS</span>
+                    <img 
+                        src="assets/icon-stress.jpg" 
+                        onerror="this.onerror=null; this.src='https://placehold.co/100x100/e2e8f0/64748b?text=MISSING';" 
+                        class="mx-auto rounded-full w-16 h-16 md:w-20 md:h-20 object-cover"
+                    >
+                </div>
+            </div>
+
+            <ol class="list-decimal space-y-3 mb-8">
+                <li><strong>Tegangan Mekanik:</strong> Angkat beban berat yang maksa otot lo kerja keras. Ini pemicu utamanya.</li>
+                <li><strong>Kerusakan Mikro:</strong> Serat otot lo robek halus pas lo nurunin beban pelan-pelan. Tubuh bakal nambal robekan ini pake serat yang lebih kuat.</li>
+                <li><strong>Metabolic Stress (Pump):</strong> Pas otot lo rasanya panas kebakar. Itu laktat numpuk.</li>
+            </ol>
+
+            <h3 class="sub-title">HUKUM WAJIB: PROGRESSIVE OVERLOAD</h3>
+            <p>Ini harga mati. Kalau bulan ini lo angkat 10kg, dan bulan depan lo masih angkat 10kg, otot lo <strong>GAK BAKAL</strong> gede. Badan lo itu pinter (dan males); kalau bebannya gak nambah, dia gak ngerasa perlu gedein otot.</p>
+
+            <div class="slate-box">
+                <p class="font-bold text-slate-900 mb-2">CARA NAMBAH BEBAN (PILIH SATU TIAP MINGGU):</p>
+                <ol class="list-decimal pl-5 text-sm">
+                    <li><strong>Tambah Berat:</strong> Minggu ini 10kg -> Minggu depan coba 12kg.</li>
+                    <li><strong>Tambah Repetisi:</strong> Minggu ini 10kg x 8 kali -> Minggu depan 10kg x 10 kali.</li>
+                    <li><strong>Perbaiki Teknik:</strong> Minggu ini angkat cepet -> Minggu depan angkat pelan (tahan 3 detik pas turun).</li>
+                </ol>
+            </div>
+            <div class="page-number">06</div>
+            <div class="footer-logo">THE ARCHITECT</div>
+        </div>
+
+        <!-- ================= PAGE 7: CHAPTER 2 (RPE) ================= -->
+        <div class="page bg-white content-padding">
+            <h3 class="sub-title">RPE: Seberapa Capek Harus Latihan?</h3>
+            <p><strong>RPE</strong> (<em>Rate of Perceived Exertion</em>) itu simpelnya adalah <strong>Skala Sisa Tenaga</strong>. Ini cara kita ngukur intensitas latihan tanpa perlu alat canggih.</p>
+            <p>Kunci hipertrofi (pembesaran otot) itu bukan "asal capek", tapi seberapa dekat lo sama batas kemampuan lo (<em>Failure</em>). Kita pake skala 1-10:</p>
+            
+            <!-- VISUAL: RPE CHART -->
+            <img 
+                src="assets/rpe-chart.jpg" 
+                onerror="this.onerror=null; this.src='https://placehold.co/800x200/ecfeff/06b6d4?text=MISSING:+assets/rpe-chart.jpg';"
+                alt="RPE Scale 1-10 (Target Zone 8-9)" 
+                class="technical-img"
+            >
+
+            <ul class="list-disc space-y-4 mt-4">
+                <li><strong>RPE 10 (Mampus/Failure):</strong> Gagal total. Lo gak bisa angkat lagi walau ditodong pistol. Biasanya teknik lo ancur di sini.</li>
+                <li><strong>RPE 8-9 (TARGET KITA):</strong> Latihan sampe berat banget, tapi <strong>masih sisa 1-2 repetisi</strong> di "tangki bensin" lo sebelum gagal.</li>
+            </ul>
+
+            <div class="cyan-box">
+                <p class="mb-0 text-sm"><strong>KENAPA?</strong> Riset bilang hasilnya sama kayak RPE 10, tapi lo gak gampang cedera dan gak gampang <em>burnout</em>. Jadi lo bisa latihan konsisten.</p>
+            </div>
+            
+            <div class="page-number">07</div>
+            <div class="footer-logo">THE ARCHITECT</div>
+        </div>
+
+        <!-- ================= PAGE 8: CHAPTER 3 COVER ================= -->
+        <div class="page bg-slate-900 text-white flex flex-col justify-center items-center relative overflow-hidden min-h-[400px] md:min-h-[297mm]">
+            <div class="absolute inset-0 bg-grid-dark opacity-30"></div>
+            <!-- VISUAL: GYM EQUIPMENT / DUMBBELL -->
+            <img 
+                src="assets/dumbbells.jpg" 
+                onerror="this.onerror=null; this.src='https://placehold.co/800x400/1e293b/06b6d4?text=MISSING:+assets/dumbbells.jpg';"
+                alt="Chapter Visual" 
+                class="opacity-80 mb-8 max-w-[80%] border border-cyan-800"
+            >
+            
+            <div class="border-2 border-cyan-500 p-8 md:p-12 text-center z-10 bg-slate-900/90 backdrop-blur w-[90%] md:w-[80%]">
+                <h3 class="text-cyan-400 tracking-[0.3em] md:tracking-[0.5em] mb-4 font-oswald text-sm md:text-base">MODULE THREE</h3>
+                <h1 class="text-4xl md:text-6xl font-bold font-oswald mb-4">THE WORKOUT<br>PROTOCOL</h1>
+                <p class="text-slate-300 italic text-sm md:text-base">(The Aesthetic 4 & Jadwal Latihan)</p>
+            </div>
+            <div class="page-number">08</div>
+        </div>
+
+        <!-- ================= PAGE 9: AESTHETIC 4 ================= -->
+        <div class="page bg-white content-padding">
+            <p>Lupain latihan "Bro-Split" (Senin dada doang, Selasa punggung doang). Itu buat yang pake steroid. Buat kita yang natural, frekuensi terbaik itu melatih tiap otot <strong>2 kali seminggu</strong>.</p>
+
+            <h3 class="sub-title mt-6">THE AESTHETIC 4 (Otot Ganteng)</h3>
+            
+            <!-- VISUAL: MUSCLE ANATOMY HIGHLIGHT -->
+            <img 
+                src="assets/torso-anatomy.jpg" 
+                onerror="this.onerror=null; this.src='https://placehold.co/800x400/f1f5f9/334155?text=MISSING:+assets/torso-anatomy.jpg';"
+                alt="Male Torso Highlighting Delts, Lats, Upper Chest" 
+                class="technical-img"
+            >
+            <p class="img-caption">Fig 3.1: Target Otot Kunci untuk Ilusi V-Taper.</p>
+
+            <p>Biar badan lo ngebentuk V-Taper, fokus hajar 4 otot ini:</p>
+            
+            <ol class="list-decimal space-y-4 mb-6">
+                <li><strong>Bahu Samping (Lateral Delts):</strong> Bikin badan lo lebar ke samping.</li>
+                <li><strong>Sayap Atas (Upper Lats):</strong> Bikin punggung lo ngebentuk huruf V.</li>
+                <li><strong>Dada Atas (Upper Chest):</strong> Bikin dada lo tebel pas pake kaos kerah V atau kemeja.</li>
+                <li><strong>Perut (Abs):</strong> Jaga pinggang tetep kecil.</li>
+            </ol>
+            
+            <div class="section-break"></div>
+
+            <h3 class="sub-title">JADWAL LATIHAN: UPPER / LOWER SPLIT</h3>
+            <p>Contoh: Senin, Selasa, Kamis, Jumat. (Rabu & Weekend Istirahat).</p>
+            
+            <div class="page-number">09</div>
+            <div class="footer-logo">THE ARCHITECT</div>
+        </div>
+
+        <!-- ================= PAGE 10: PROGRAM PART 1 ================= -->
+        <div class="page bg-white content-padding">
+            <h4 class="font-bold text-slate-800 mb-4 bg-slate-100 p-2 border-l-4 border-slate-900">SENIN: UPPER BODY A (Fokus Kekuatan)</h4>
+            
+            <!-- VISUAL: EXERCISE ICON 1 -->
+            <img 
+                src="assets/upper-body-a.jpg" 
+                onerror="this.onerror=null; this.src='https://placehold.co/800x150/e2e8f0/64748b?text=MISSING:+assets/upper-body-a.jpg';"
+                alt="Incline, Pullup, OHP Exercise Guide" 
+                class="technical-img mb-6"
+            >
+
+            <div class="overflow-x-auto">
+                <table class="mb-8 min-w-full">
+                    <thead>
+                        <tr><th>LATIHAN</th><th>SETS</th><th>REPS</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Incline Dumbbell Press (Dada Atas)</td><td>3</td><td>6-8</td></tr>
+                        <tr><td>Lat Pulldown / Pull Up (Sayap)</td><td>3</td><td>8-10</td></tr>
+                        <tr><td>Overhead Press (Bahu Depan)</td><td>3</td><td>8-10</td></tr>
+                        <tr><td>Cable Row (Punggung Tebal)</td><td>3</td><td>10-12</td></tr>
+                        <tr><td><strong>Lateral Raises (Bahu Samping - WAJIB)</strong></td><td>4</td><td>15-20</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4 class="font-bold text-slate-800 mb-4 bg-slate-100 p-2 border-l-4 border-slate-900">SELASA: LOWER BODY A (Kaki & Perut)</h4>
+            <div class="overflow-x-auto">
+                <table class="mb-8 min-w-full">
+                    <thead>
+                        <tr><th>LATIHAN</th><th>SETS</th><th>REPS</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Squat / Leg Press</td><td>3</td><td>6-8</td></tr>
+                        <tr><td>Romanian Deadlift (Paha Belakang)</td><td>3</td><td>8-10</td></tr>
+                        <tr><td>Calf Raises (Betis)</td><td>4</td><td>15</td></tr>
+                        <tr><td>Hanging Leg Raises (Abs)</td><td>3</td><td>Sampe Gagal</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="page-number">10</div>
+            <div class="footer-logo">THE ARCHITECT</div>
+        </div>
+
+        <!-- ================= PAGE 11: PROGRAM PART 2 ================= -->
+        <div class="page bg-white content-padding">
+            <h4 class="font-bold text-slate-800 mb-4 bg-slate-100 p-2 border-l-4 border-slate-900">KAMIS: UPPER BODY B (Fokus Gedein Otot)</h4>
+            <div class="overflow-x-auto">
+                <table class="mb-8 min-w-full">
+                    <thead>
+                        <tr><th>LATIHAN</th><th>SETS</th><th>REPS</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Flat Bench Press / Mesin</td><td>3</td><td>10-12</td></tr>
+                        <tr><td>Dumbbell Row</td><td>3</td><td>10-12</td></tr>
+                        <tr><td><strong>Lateral Raises (LAGI!)</strong></td><td>4</td><td>15-20</td></tr>
+                        <tr><td>Face Pulls (Bahu Belakang)</td><td>3</td><td>15</td></tr>
+                        <tr><td>Bicep Curl & Tricep Pushdown</td><td>3</td><td>12</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4 class="font-bold text-slate-800 mb-4 bg-slate-100 p-2 border-l-4 border-slate-900">JUMAT: LOWER BODY B</h4>
+            <div class="overflow-x-auto">
+                <table class="mb-8 min-w-full">
+                    <thead>
+                        <tr><th>LATIHAN</th><th>SETS</th><th>REPS</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Lunges / Split Squat</td><td>3</td><td>10-12</td></tr>
+                        <tr><td>Leg Curl</td><td>3</td><td>12-15</td></tr>
+                        <tr><td>Plank</td><td>3</td><td>1 Menit</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="page-number">11</div>
+            <div class="footer-logo">THE ARCHITECT</div>
+        </div>
+
+        <!-- ================= PAGE 12: CHAPTER 4 COVER ================= -->
+        <div class="page bg-slate-900 text-white flex flex-col justify-center items-center relative overflow-hidden min-h-[400px] md:min-h-[297mm]">
+            <div class="absolute inset-0 bg-grid-dark opacity-30"></div>
+            <!-- VISUAL: FOOD PYRAMID / MACROS -->
+            <img 
+                src="assets/food-pyramid.jpg" 
+                onerror="this.onerror=null; this.src='https://placehold.co/800x400/1e293b/06b6d4?text=MISSING:+assets/food-pyramid.jpg';"
+                alt="Chapter Visual" 
+                class="opacity-80 mb-8 max-w-[80%] border border-cyan-800"
+            >
+            
+            <div class="border-2 border-cyan-500 p-8 md:p-12 text-center z-10 bg-slate-900/90 backdrop-blur w-[90%] md:w-[80%]">
+                <h3 class="text-cyan-400 tracking-[0.3em] md:tracking-[0.5em] mb-4 font-oswald text-sm md:text-base">MODULE FOUR</h3>
+                <h1 class="text-4xl md:text-6xl font-bold font-oswald mb-4">NUTRITIONAL<br>BIOCHEMISTRY</h1>
+                <p class="text-slate-300 italic text-sm md:text-base">(Cara Hitung Kalori & Macro)</p>
+            </div>
+            <div class="page-number">12</div>
+        </div>
+
+        <!-- ================= PAGE 13: NUTRITION ================= -->
+        <div class="page bg-white content-padding">
+            <p>Nge-gym cuma ngerusak otot. Makanan yang ngebangun ulang otot lo jadi lebih gede.</p>
+
+            <h3 class="sub-title mt-6">1. Itung Kalori Lo (Jangan Asal Makan)</h3>
+            <p>Cari di Google: <strong>"TDEE Calculator"</strong>. Masukin data lo. Dapet angka maintenance (misal: 2000 kalori).</p>
+            <ul class="list-disc space-y-2 mb-8">
+                <li><strong>Mau Kurus (Cutting):</strong> Kurangi 500. Makan 1500 kalori.</li>
+                <li><strong>Mau Gede (Bulking):</strong> Tambah 300. Makan 2300 kalori. Jangan napsu tambah 1000, ntar jadi lemak semua.</li>
+            </ul>
+
+            <h3 class="sub-title">2. MACRO NUTRIENTS (Isi Piring Lo)</h3>
+            
+            <!-- VISUAL: MACRO SPLIT CHART -->
+            <img 
+                src="assets/macro-chart.jpg" 
+                onerror="this.onerror=null; this.src='https://placehold.co/800x200/f8fafc/334155?text=MISSING:+assets/macro-chart.jpg';"
+                alt="High Protein vs Mod Carb vs Low Fat Ratio Chart" 
+                class="technical-img mb-6"
+            >
+
+            <div class="space-y-4">
+                <div class="border-l-4 border-cyan-500 pl-4">
+                    <p class="font-bold mb-1">PROTEIN (Batu Bata)</p>
+                    <p class="text-sm m-0">Wajib <strong>1.6 - 2.2 gram per Kg Berat Badan</strong>. Sumber: Dada ayam, Putih Telur Rebus, Tempe, Whey, Ikan.</p>
+                </div>
+                <div class="border-l-4 border-slate-500 pl-4">
+                    <p class="font-bold mb-1">LEMAK (Hormon)</p>
+                    <p class="text-sm m-0">Minimal 0.6 gram per Kg. Lemak sehat penting buat bikin Testosteron lo. Sumber: Kuning telur, Alpukat, Minyak Zaitun.</p>
+                </div>
+                <div class="border-l-4 border-slate-300 pl-4">
+                    <p class="font-bold mb-1">KARBO (Bensin)</p>
+                    <p class="text-sm m-0">Sisanya. Buat tenaga ngangkat besi. Sumber: Nasi putih, Kentang, Buah.</p>
+                </div>
+            </div>
+            <div class="page-number">13</div>
+            <div class="footer-logo">THE ARCHITECT</div>
+        </div>
+
+        <!-- ================= PAGE 14: INDO DIET ================= -->
+        <div class="page bg-white content-padding">
+            <h3 class="sub-title">3. THE INDO-DIET PROTOCOL</h3>
+            <p>Susah diet di Indo? Gak juga. Gini caranya biar tetep sixpack walau makan di luar:</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                <div class="bg-slate-50 p-4 border border-slate-200">
+                    <!-- VISUAL: WARTEG PLATE -->
+                    <img 
+                        src="assets/warteg.jpg" 
+                        onerror="this.onerror=null; this.src='https://placehold.co/300x150/e2e8f0/64748b?text=MISSING:+assets/warteg.jpg';"
+                        alt="Ideal Warteg Plate Portion" 
+                        class="mb-4 w-full h-48 object-cover"
+                    >
+                    
+                    <h4 class="font-bold text-slate-900 mb-2 border-b border-slate-300 pb-2">STRATEGI WARTEG</h4>
+                    <ul class="list-disc pl-4 text-sm space-y-2">
+                        <li><strong>Nasi:</strong> Bilang tegas: <em>"Nasi setengah ya Bu."</em></li>
+                        <li><strong>Protein:</strong> Ambil minimal 2 macem (Telur + Ayam Suwir).</li>
+                        <li><strong>Sayur:</strong> WAJIB ambil Capcay atau Sup.</li>
+                        <li><strong>Kuah:</strong> Dikit aja "nyemek".</li>
+                        <li><strong>Gorengan:</strong> <strong>HARAM</strong>. 1 Kerupuk = 150 Kalori. 1 Bakwan = 250 kalori. Stop ginian.</li>
+                    </ul>
+                </div>
+
+                <div class="bg-slate-50 p-4 border border-slate-200">
+                    <!-- VISUAL: PADANG PLATE -->
+                    <img 
+                        src="assets/padang.jpg" 
+                        onerror="this.onerror=null; this.src='https://placehold.co/300x150/e2e8f0/64748b?text=MISSING:+assets/padang.jpg';"
+                        alt="Ideal Padang Plate Portion" 
+                        class="mb-4 w-full h-48 object-cover"
+                    >
+
+                    <h4 class="font-bold text-slate-900 mb-2 border-b border-slate-300 pb-2">STRATEGI PADANG</h4>
+                    <ul class="list-disc pl-4 text-sm space-y-2">
+                        <li><strong>Nasi:</strong> Minta separo.</li>
+                        <li><strong>Lauk:</strong> Ayam Pop (kulit buang), Ayam Bakar, atau Ikan Bakar. Jangan Rendang/Gulai.</li>
+                        <li><strong>Minum:</strong> Air putih atau Es Teh Tawar.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="page-number">14</div>
+            <div class="footer-logo">THE ARCHITECT</div>
+        </div>
+
+        <!-- ================= PAGE 15: SUPPLEMENTS ================= -->
+        <div class="page bg-white content-padding">
+            <h1 class="chapter-title">CHAPTER 5:<br>SUPPLEMENTATION</h1>
+            <p>Jangan ketipu marketing suplemen. Ini daftar jujur:</p>
+
+            <h3 class="sub-title mt-6 text-cyan-600">TIER S (Wajib Punya)</h3>
+            <ul class="list-disc space-y-3 mb-6">
+                <li><strong>Creatine Monohydrate:</strong> Nambah tenaga ledak, bikin otot kelihatan penuh. Dosis: 5g tiap hari.</li>
+                <li><strong>Whey Protein:</strong> Makanan praktis. Kalau lo sibuk, minum ini.</li>
+            </ul>
+
+            <h3 class="sub-title text-slate-600">TIER A (Bagus Buat Kesehatan)</h3>
+            <ul class="list-disc space-y-3 mb-6">
+                <li><strong>Multivitamin:</strong> Jaga-jaga kalau kurang makan buah.</li>
+                <li><strong>Kopi Hitam (Kafein):</strong> Pre-workout alami terbaik. Minum 30 menit sebelum gym.</li>
+            </ul>
+
+            <h3 class="sub-title text-red-600">TIER F (Sampah / Buang Duit)</h3>
+            <ul class="list-disc space-y-3 mb-8">
+                <li><strong>BCAA:</strong> Gak guna kalau protein harian lo cukup.</li>
+                <li><strong>Mass Gainer:</strong> Isinya gula doang. Mending makan nasi padang + susu.</li>
+                <li><strong>Fat Burner:</strong> Gak ngefek. Satu-satunya fat burner itu <strong>Defisit Kalori</strong>.</li>
+            </ul>
+
+            <div class="section-break"></div>
+
+            <h3 class="sub-title">TIDUR: WAKTU LO TUMBUH</h3>
+            <p>Lo gak tumbuh di gym. Lo tumbuh pas tidur.</p>
+            <ul class="list-disc">
+                <li>Tidur 7-9 jam. Kurang dari 6 jam = Testosteron anjlok.</li>
+                <li>Kamar gelap total & adem.</li>
+                <li><strong>No HP:</strong> Jangan main HP 30 menit sebelum tidur.</li>
+            </ul>
+            <div class="page-number">15</div>
+            <div class="footer-logo">THE ARCHITECT</div>
+        </div>
+
+        <!-- ================= PAGE 16: ACTION PLAN ================= -->
+        <div class="page bg-white content-padding">
+             <h1 class="chapter-title text-cyan-700">ACTION PLAN:<br>MINGGU PERTAMA</h1>
+             
+             <!-- VISUAL: CHECKLIST GRAPHIC -->
+             <img 
+                 src="assets/tracker.jpg" 
+                 onerror="this.onerror=null; this.src='https://placehold.co/800x150/ecfeff/06b6d4?text=MISSING:+assets/tracker.jpg';"
+                 alt="Weekly Progress Tracker Header" 
+                 class="technical-img mb-8 border-none"
+             >
+
+             <div class="space-y-6 mt-8">
+                 <div class="flex items-start gap-4">
+                     <div class="bg-slate-900 text-white font-bold p-3 w-16 text-center rounded flex-shrink-0">HARI 1</div>
+                     <div class="p-4 bg-slate-50 border border-slate-200 flex-grow rounded">
+                         <p class="font-bold text-slate-900 mb-1">HITUNG</p>
+                         <p class="text-sm m-0">Itung TDEE lo. Tentuin target kalori (Cutting/Bulking).</p>
+                     </div>
+                 </div>
+
+                 <div class="flex items-start gap-4">
+                     <div class="bg-slate-900 text-white font-bold p-3 w-16 text-center rounded flex-shrink-0">HARI 2</div>
+                     <div class="p-4 bg-slate-50 border border-slate-200 flex-grow rounded">
+                         <p class="font-bold text-slate-900 mb-1">BELANJA</p>
+                         <p class="text-sm m-0">Belanja. Beli Creatine, stok telur, sama dada ayam di kulkas.</p>
+                     </div>
+                 </div>
+
+                 <div class="flex items-start gap-4">
+                     <div class="bg-slate-900 text-white font-bold p-3 w-16 text-center rounded flex-shrink-0">HARI 3</div>
+                     <div class="p-4 bg-slate-50 border border-slate-200 flex-grow rounded">
+                         <p class="font-bold text-slate-900 mb-1">MULAI GYM</p>
+                         <p class="text-sm m-0">Mulai nge-gym pake program "Upper Body A". Bawa HP, catet beban angkatan lo.</p>
+                     </div>
+                 </div>
+
+                 <div class="flex items-start gap-4">
+                     <div class="bg-slate-900 text-white font-bold p-3 w-16 text-center rounded flex-shrink-0">HARI 4</div>
+                     <div class="p-4 bg-slate-50 border border-slate-200 flex-grow rounded">
+                         <p class="font-bold text-slate-900 mb-1">FOTO</p>
+                         <p class="text-sm m-0">Foto badan lo sekarang (<em>Before</em>). Jangan kempisin perut. Liat bedanya 3 bulan lagi.</p>
+                     </div>
+                 </div>
+             </div>
+
+             <div class="mt-12 text-center border-t border-slate-200 pt-8">
+                 <p class="text-xl md:text-2xl font-bold font-oswald text-slate-900">END OF VOLUME 2</p>
+                 <p class="text-slate-500 text-sm">Lanjutkan ke Volume 3 buat belajar cara berpakaian (Style).</p>
+             </div>
+             <div class="page-number">16</div>
+             <div class="footer-logo">THE ARCHITECT</div>
+        </div>
+
+    </div>
+</body>
+</html>
