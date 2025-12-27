@@ -1,166 +1,312 @@
-<!-- 
-    PANDUAN STRUKTUR FILE (OPSI 1 - GERBANG UTAMA):
-    
-    Agar menu di bawah berfungsi, pastikan Anda mengubah nama file (Rename) 
-    di GitHub Anda menjadi seperti daftar berikut:
-
-    1. Volume 1 -> ebook_preview_vol1.html
-    2. Volume 2 -> ebook_preview_vol2.html
-    3. Volume 3 -> ebook_preview_vol3.html
-    4. Volume 4 -> ebook_preview_vol4.html
-    5. Volume 5 -> ebook_preview_vol5.html
-
-    File ini (Menu Utama) harus dinamakan: index.html
--->
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PrimeTheory.Lab: Premium Access</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
     <style>
-        body { background-color: #0f172a; color: white; font-family: 'Inter', sans-serif; }
+        body { 
+            background-color: #020617; /* Very Dark Slate */
+            color: white; 
+            font-family: 'Inter', sans-serif; 
+            overflow: hidden; /* Mencegah scrollbar saat animasi */
+        }
         .font-oswald { font-family: 'Oswald', sans-serif; }
-        .hidden { display: none; }
-        .btn-volume {
-            display: block;
-            width: 100%;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            background: #1e293b;
-            border: 1px solid #334155;
-            color: white;
-            text-align: left;
-            border-radius: 0.5rem;
-            transition: all 0.3s ease;
-            text-decoration: none;
+        .hidden { display: none !important; }
+
+        /* === 3D BOOK ANIMATION CSS === */
+        .scene {
+            width: 220px;
+            height: 320px;
+            perspective: 1000px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0; /* Di belakang form */
         }
-        .btn-volume:hover {
-            background: #06b6d4; /* Cyan */
-            border-color: #22d3ee;
-            color: #0f172a;
-            font-weight: bold;
-        }
-        .input-field {
-            background: #1e293b;
-            border: 1px solid #334155;
-            color: white;
-            padding: 1rem;
+
+        .book {
             width: 100%;
-            border-radius: 0.5rem;
-            outline: none;
-            margin-bottom: 1rem;
+            height: 100%;
+            transform-style: preserve-3d;
+            animation: floatRotate 15s infinite linear;
+        }
+
+        .book-face {
+            position: absolute;
+            width: 220px;
+            height: 320px;
+            backface-visibility: visible; /* Biar sisi belakang kelihatan gelap */
+        }
+
+        /* Depan (Cover) */
+        .book-front {
+            transform: translateZ(25px);
+            /* Ganti URL ini dengan gambar cover terbaik Anda, misal v5-cover.jpg */
+            background: url('v5-cover.jpg'); 
+            background-size: cover;
+            background-position: center;
+            border-radius: 4px 10px 10px 4px;
+            box-shadow: inset 5px 0 10px rgba(0,0,0,0.5); /* Efek lipatan buku */
+        }
+
+        /* Belakang */
+        .book-back {
+            transform: rotateY(180deg) translateZ(25px);
+            background: #1e293b; /* Warna cover belakang polos */
+            border-radius: 10px 4px 4px 10px;
+            border: 2px solid #334155;
+        }
+
+        /* Punggung Buku (Spine) */
+        .book-spine {
+            position: absolute;
+            width: 50px;
+            height: 320px;
+            background: #0f172a; /* Warna punggung gelap */
+            transform: rotateY(-90deg) translateZ(25px);
+            left: 0px; /* Adjust posisi */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #06b6d4;
             font-family: 'Oswald', sans-serif;
-            letter-spacing: 2px;
-            text-align: center;
+            font-size: 14px;
+            letter-spacing: 5px;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotateY(-90deg) translateX(-25px); /* Koreksi posisi spine */
+            transform-origin: left;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
         }
-        .input-field:focus { border-color: #06b6d4; }
+
+        /* Sisi Kanan (Kertas) */
+        .book-right {
+            position: absolute;
+            width: 50px;
+            height: 310px;
+            background: #f1f5f9; /* Warna kertas putih */
+            transform: rotateY(90deg) translateZ(195px); /* 220 - 25 */
+            top: 5px;
+            background-image: linear-gradient(90deg, #e2e8f0 1px, transparent 1px);
+            background-size: 4px 100%; /* Efek lembaran kertas */
+        }
+
+        /* Animasi Putar & Melayang */
+        @keyframes floatRotate {
+            0% { transform: rotateY(0deg) rotateX(10deg) translateY(0px); }
+            50% { transform: rotateY(180deg) rotateX(0deg) translateY(-20px); }
+            100% { transform: rotateY(360deg) rotateX(10deg) translateY(0px); }
+        }
+
+        /* Efek Cahaya di Belakang Buku */
+        .glow-effect {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(6,182,212,0.2) 0%, rgba(2,6,23,0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Form Styling (Glassmorphism) */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75); /* Slate 900 Transparan */
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(51, 65, 85, 0.5);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Module Card & Input */
+        .module-card {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid #334155;
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            display: flex; align-items: center; justify-content: space-between;
+            cursor: pointer; text-decoration: none; margin-bottom: 0.75rem;
+        }
+        .module-card:hover { border-color: #06b6d4; background: rgba(15, 23, 42, 0.9); transform: translateX(5px); }
+        .input-field {
+            background: rgba(30, 41, 59, 0.8); border: 1px solid #334155; color: white;
+            padding: 1rem; width: 100%; border-radius: 0.5rem; outline: none;
+            font-family: 'Oswald', sans-serif; letter-spacing: 3px; text-align: center; font-size: 1.1rem;
+        }
+        .input-field:focus { border-color: #06b6d4; box-shadow: 0 0 15px rgba(6,182,212,0.2); }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4">
+<body class="flex flex-col items-center justify-center min-h-screen p-4 relative">
 
-    <div class="max-w-md w-full">
+    <!-- 1. BACKGROUND GLOW -->
+    <div class="glow-effect"></div>
+
+    <!-- 2. 3D ROTATING BOOK (Visual Only) -->
+    <div class="scene">
+        <div class="book">
+            <div class="book-face book-front"></div>
+            <div class="book-face book-back"></div>
+            <div class="book-spine">THE ARCHITECT</div> <!-- Tulisan di punggung buku -->
+            <div class="book-right"></div> <!-- Efek kertas -->
+        </div>
+    </div>
+
+    <!-- 3. MAIN UI (Foreground) -->
+    <div class="w-full max-w-lg z-10">
         
-        <!-- LOGO HEADER -->
-        <div class="text-center mb-10">
-            <h1 class="text-cyan-400 tracking-[0.4em] font-bold text-sm mb-2">PRIMETHEORY.LAB</h1>
-            <h2 class="text-4xl font-oswald font-bold text-white">THE ARCHITECT</h2>
-            <div class="h-1 w-20 bg-cyan-500 mx-auto mt-4 rounded-full"></div>
+        <!-- HEADER -->
+        <div class="text-center mb-8 relative">
+            <h1 class="text-cyan-400 tracking-[0.4em] font-bold text-xs mb-2 drop-shadow-md">PRIMETHEORY.LAB</h1>
+            <h2 class="text-5xl font-oswald font-bold text-white drop-shadow-xl tracking-tighter">THE BLUEPRINT</h2>
+            <div class="h-1 w-20 bg-cyan-500 mx-auto mt-4 rounded-full shadow-[0_0_10px_#06b6d4]"></div>
         </div>
 
-        <!-- LOGIN GATE -->
-        <div id="login-section" class="bg-slate-800/50 p-8 rounded-xl border border-slate-700 shadow-2xl backdrop-blur-sm">
-            <p class="text-slate-400 text-center mb-6 text-sm">Masukkan Kunci Akses Premium Anda</p>
+        <!-- === LOGIN GATE === -->
+        <div id="login-gate" class="glass-panel p-8 rounded-2xl">
+            <div class="text-center mb-6">
+                <p class="text-slate-300 text-sm font-light">Masukkan Passcode untuk mengakses perpustakaan.</p>
+            </div>
             
-            <input type="password" id="passwordInput" class="input-field" placeholder="ENTER PASSCODE">
+            <div class="space-y-4">
+                <input type="password" id="passwordInput" class="input-field" placeholder="PASSCODE">
+                
+                <button onclick="login()" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-oswald font-bold py-4 rounded-lg transition-all tracking-widest shadow-lg shadow-cyan-900/50 hover:shadow-cyan-500/30">
+                    UNLOCK LIBRARY
+                </button>
+            </div>
             
-            <button onclick="checkAccess()" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-oswald font-bold py-4 rounded-lg transition-all tracking-widest">
-                UNLOCK ACCESS
-            </button>
-            
-            <p id="errorMsg" class="text-red-500 text-center text-xs mt-4 hidden">Akses Ditolak. Kode Salah.</p>
+            <p id="errorMsg" class="text-red-400 text-center text-xs mt-4 hidden font-bold tracking-wide">AKSES DITOLAK. KODE SALAH.</p>
         </div>
 
-        <!-- CONTENT MENU (Hidden by default) -->
-        <div id="menu-section" class="hidden">
-            <p class="text-slate-400 text-center mb-6 text-sm">Selamat Datang, Architect.</p>
+        <!-- === DASHBOARD SECTION (Hidden Awalnya) === -->
+        <div id="dashboard" class="hidden glass-panel p-6 rounded-2xl">
+            <p class="text-slate-400 text-xs uppercase tracking-widest mb-4 ml-1 border-b border-slate-700 pb-2">Your Premium Modules</p>
             
-            <a href="ebook_preview_vol1.html" class="btn-volume group">
-                <span class="text-cyan-400 text-xs tracking-widest block mb-1">MODULE 01</span>
-                <span class="font-oswald text-xl">BIOLOGY & STRUCTURE</span>
-            </a>
-            
-            <a href="ebook_preview_vol2.html" class="btn-volume group">
-                <span class="text-cyan-400 text-xs tracking-widest block mb-1">MODULE 02</span>
-                <span class="font-oswald text-xl">PHYSIQUE & HYPERTROPHY</span>
-            </a>
-            
-            <a href="ebook_preview_vol3.html" class="btn-volume group">
-                <span class="text-cyan-400 text-xs tracking-widest block mb-1">MODULE 03</span>
-                <span class="font-oswald text-xl">VISUAL STYLE SYSTEM</span>
+            <!-- LINK KE VOLUME 1 -->
+            <a href="ebook_preview_vol1.html" class="module-card group">
+                <div>
+                    <span class="text-xs text-slate-500 font-bold">VOL. 01</span>
+                    <h3 class="text-white font-oswald text-lg">BIOLOGY & STRUCTURE</h3>
+                </div>
+                <span class="text-cyan-500 text-xl group-hover:translate-x-1 transition-transform">→</span>
             </a>
 
-            <a href="ebook_preview_vol4.html" class="btn-volume group">
-                <span class="text-cyan-400 text-xs tracking-widest block mb-1">MODULE 04</span>
-                <span class="font-oswald text-xl">SOCIAL MASTERY</span>
+            <!-- LINK KE VOLUME 2 -->
+            <a href="ebook_preview_vol2.html" class="module-card group">
+                <div>
+                    <span class="text-xs text-slate-500 font-bold">VOL. 02</span>
+                    <h3 class="text-white font-oswald text-lg">PHYSIQUE & HYPERTROPHY</h3>
+                </div>
+                <span class="text-cyan-500 text-xl group-hover:translate-x-1 transition-transform">→</span>
             </a>
 
-            <a href="ebook_preview_vol5.html" class="btn-volume group">
-                <span class="text-cyan-400 text-xs tracking-widest block mb-1">MODULE 05</span>
-                <span class="font-oswald text-xl">THE BLUEPRINT (MINDSET)</span>
+            <!-- LINK KE VOLUME 3 -->
+            <a href="ebook_preview_vol3.html" class="module-card group">
+                <div>
+                    <span class="text-xs text-slate-500 font-bold">VOL. 03</span>
+                    <h3 class="text-white font-oswald text-lg">VISUAL STYLE SYSTEM</h3>
+                </div>
+                <span class="text-cyan-500 text-xl group-hover:translate-x-1 transition-transform">→</span>
             </a>
-            
-            <button onclick="logout()" class="w-full mt-8 text-slate-500 text-xs hover:text-white transition-colors">
-                Kunci Kembali (Lock)
+
+            <!-- LINK KE VOLUME 4 -->
+            <a href="ebook_preview_vol4.html" class="module-card group">
+                <div>
+                    <span class="text-xs text-slate-500 font-bold">VOL. 04</span>
+                    <h3 class="text-white font-oswald text-lg">SOCIAL MASTERY</h3>
+                </div>
+                <span class="text-cyan-500 text-xl group-hover:translate-x-1 transition-transform">→</span>
+            </a>
+
+            <!-- LINK KE VOLUME 5 -->
+            <a href="ebook_preview_vol5.html" class="module-card group border-cyan-800/50 bg-cyan-950/20">
+                <div>
+                    <span class="text-xs text-cyan-400 font-bold">VOL. 05 (FINAL)</span>
+                    <h3 class="text-cyan-100 font-oswald text-lg">THE BLUEPRINT</h3>
+                </div>
+                <span class="text-cyan-400 text-xl group-hover:translate-x-1 transition-transform">→</span>
+            </a>
+
+            <button onclick="logout()" class="w-full mt-6 text-slate-500 text-xs hover:text-red-400 transition-colors py-2 border border-transparent hover:border-red-900/30 rounded text-center">
+                LOGOUT / LOCK DEVICE
             </button>
         </div>
 
     </div>
 
+    <!-- SCRIPT LOGIC -->
     <script>
-        // SETTING PASSWORD DISINI
-        const CORRECT_PASS = "ARCHITECT2025"; 
+        // --- KONFIGURASI PASSWORD ---
+        const MASTER_KEY = "ARCHITECT2025"; 
+        // ----------------------------
 
-        function checkAccess() {
-            const input = document.getElementById('passwordInput').value;
-            const error = document.getElementById('errorMsg');
-            
-            if (input === CORRECT_PASS) {
-                // Sukses
-                document.getElementById('login-section').classList.add('hidden');
-                document.getElementById('menu-section').classList.remove('hidden');
-                // Simpan status login di browser (opsional, biar ga login ulang terus)
-                sessionStorage.setItem('is_logged_in', 'true');
-            } else {
-                // Gagal
-                error.classList.remove('hidden');
-                // Efek getar
-                const box = document.getElementById('login-section');
-                box.classList.add('animate-pulse');
-                setTimeout(() => box.classList.remove('animate-pulse'), 200);
+        const loginGate = document.getElementById('login-gate');
+        const dashboard = document.getElementById('dashboard');
+        const passInput = document.getElementById('passwordInput');
+        const errorMsg = document.getElementById('errorMsg');
+        
+        // Hide Book when dashboard opens (Optional: Book can stay or fade out)
+        const bookScene = document.querySelector('.scene');
+
+        // Fungsi Cek Login saat halaman dibuka
+        window.onload = function() {
+            if (sessionStorage.getItem('architect_access') === 'granted') {
+                showDashboard();
             }
         }
 
-        // Cek apakah user sudah login sebelumnya (saat refresh)
-        window.onload = function() {
-            if (sessionStorage.getItem('is_logged_in') === 'true') {
-                document.getElementById('login-section').classList.add('hidden');
-                document.getElementById('menu-section').classList.remove('hidden');
+        function login() {
+            if (passInput.value === MASTER_KEY) {
+                sessionStorage.setItem('architect_access', 'granted');
+                showDashboard();
+            } else {
+                errorMsg.classList.remove('hidden');
+                loginGate.classList.add('animate-pulse');
+                setTimeout(() => loginGate.classList.remove('animate-pulse'), 200);
             }
+        }
+
+        function showDashboard() {
+            // Animasi transisi
+            loginGate.style.opacity = '0';
+            setTimeout(() => {
+                loginGate.classList.add('hidden');
+                dashboard.classList.remove('hidden');
+                
+                // Efek masuk dashboard
+                dashboard.style.opacity = '0';
+                dashboard.style.transform = 'translateY(20px)';
+                
+                requestAnimationFrame(() => {
+                    dashboard.style.transition = "all 0.5s ease";
+                    dashboard.style.opacity = '1';
+                    dashboard.style.transform = 'translateY(0)';
+                });
+                
+                // Opsional: Geser buku ke samping atau blur saat dashboard aktif
+                bookScene.style.transition = "all 1s ease";
+                bookScene.style.filter = "blur(10px)";
+                bookScene.style.opacity = "0.3";
+                
+            }, 300);
         }
 
         function logout() {
-            sessionStorage.removeItem('is_logged_in');
+            sessionStorage.removeItem('architect_access');
             location.reload();
         }
 
-        // Allow Enter key
-        document.getElementById("passwordInput").addEventListener("keypress", function(event) {
+        passInput.addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
-                checkAccess();
+                login();
             }
         });
     </script>
